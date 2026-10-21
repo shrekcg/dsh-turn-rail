@@ -1,0 +1,5 @@
+# dsh-turn-rail bundle patch: mount the client-only row into the profile roster.
+
+- insert:
+    - id: dsh-turn-rail
+      name: 'dsh-turn-rail'

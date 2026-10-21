@@ -1,0 +1,49 @@
+{
+  "name": "dsh-turn-rail",
+  "version": "0.1.0",
+  "description": "Conversation turn rail for the DSH Web UI: one tick per user message, hover to preview, click to jump, plus a scroll-position indicator. Client-only, no host RPC.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "session",
+    "navigation",
+    "timeline"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shrekcg/dsh-turn-rail.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shrekcg/dsh-turn-rail/issues"
+  },
+  "homepage": "https://github.com/shrekcg/dsh-turn-rail#readme",
+  "license": "MIT"
+}
