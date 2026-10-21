@@ -1,93 +1,102 @@
-# dsh-turn-rail
-
 <p align="center">
-  <img src="./docs/screenshots/hover.png" width="620" alt="左侧刻度滑轨：悬停显示该轮提问摘要">
+  <img src="./assets/readme/hero.svg" width="100%" alt="dsh-turn-rail — a turn rail on the left edge of a long conversation: one tick per question, hover to preview, click to jump">
 </p>
 
 <p align="center">
-  <strong>给长对话一条刻度尺：悬停看提问，点一下到那一条。</strong><br>
-  纯客户端插件，不读会话日志、不走 RPC、不加任何设置项。
+  <a href="#install"><img alt="install" src="https://img.shields.io/badge/dsh%20plugin%20add-dsh--turn--rail-4a7dff"></a>
+  <img alt="platform" src="https://img.shields.io/badge/DSH%20Web%20UI-0.2.x-informational">
+  <img alt="license" src="https://img.shields.io/badge/license-MIT-3fb950">
+  <img alt="deps" src="https://img.shields.io/badge/runtime%20deps-0-3fb950">
 </p>
 
-English | [中文](./README.zh.md)
+<p align="center">
+  <b>Finding the question you asked ten turns ago should not depend on luck.</b><br>
+  A rail of ticks on the left edge — hover to preview, click to jump.
+</p>
 
-## 为什么需要它
+## See it
 
-对话长了以后，想回到某一个问题的位置，只能一路往上滚，或者翻宿主的「加载更早」翻到眼熟为止。左侧没有任何定位参照，几百轮之后基本等于失忆。
+<p align="center">
+  <img src="./assets/readme/tour-hover.png" width="76%" alt="Hovering the 12th tick: a card labelled turn 12 shows the question text and a jump hint">
+</p>
 
-**dsh-turn-rail** 在对话区左缘放一列短横线：一条线 = 你发出的一个问题。悬停就能看到当时问了什么，点一下直接跳过去。它只做这一件事，做完就收手。
+<p align="center">
+  <sub>Hover any tick — it grows, its two neighbours grow slightly; the card shows the turn number and the question.</sub>
+</p>
 
-## 功能
+<p align="center">
+  <img src="./assets/readme/tour-progress.png" width="34%" alt="Dragging the scroll bar on the far left: the blue thumb follows the position">
+</p>
+
+<p align="center">
+  <sub>The thin bar on the far left: drag or click to scroll proportionally.</sub>
+</p>
+
+## What it solves
+
+`Ctrl+F` finds words, not places. To get back to a question from three steps ago you scroll up until something looks familiar.
+
+**dsh-turn-rail** puts a column of short ticks on the left edge of the conversation: **one tick = one message you sent.** Hover to see what you asked, click to go there. That is the whole product — no settings, no panel, no background work.
+
+### Four details that matter
 
 | | |
 |---|---|
-| **刻度导航** | 每条真实提问一根短横线，按顺序排列并在对话区垂直居中；提问多时自动压密间距，不会溢出屏幕 |
-| **悬停预览** | 刻度变长、上下相邻两根略长（阶梯效果）；弹出卡片显示「第 N 轮 + 提问原文」，最多 4 行后省略 |
-| **点击跳转** | 平滑滚到该条并对它做一次浅色高亮；**目标已经被虚拟列表卸掉时会自动驱动宿主的「加载更早」，把它翻回来再定位** |
-| **当前阅读位置** | 你正在看的那一轮始终是蓝色长刻度，随滚动实时移动——比单纯刻度多了「我在哪」 |
-| **滚动进度** | 最左侧一条细进度条，拖拽或点击按比例跳转，拖动时显示百分比 |
-| **自动让位 / 隐藏** | 刻度压到正文时向左微调，最多 14px；退无可退才隐藏，绝不挡字。不在对话页、没有提问、或设置弹窗打开时自动隐藏 |
+| **Jumps even when the target is unloaded** | History is a virtualised list; turns you scrolled past are not in the DOM. Clicking drives the host's own "load earlier" paging until that page is back, then locates the turn (6 s budget, stops as soon as the button disappears) |
+| **Never jumps to the wrong duplicate** | Turn identity comes from the message anchor `data-chat-anchor-key`, not from matching text |
+| **Shows where you are** | The turn you are reading stays a long blue tick and moves as you scroll |
+| **Never covers your text** | If the rail would overlap a message it shifts left by up to 14 px, and only hides as a last resort |
 
-<p align="center">
-  <img src="./docs/screenshots/progress.png" width="320" alt="拖动左侧进度条：滚动位置与百分比气泡">
-</p>
-
-## 安装
+## Install
 
 ```sh
-dsh plugin --profile web add dsh-turn-rail
+dsh plugin --profile web add https://github.com/shrekcg/dsh-turn-rail
 ```
 
-装完**硬刷新浏览器**（Cmd/Ctrl + Shift + R）。
+Hard-refresh the browser afterwards (Cmd/Ctrl + Shift + R).
 
-> 把 `web` 换成你自己的 profile 名（桌面版通常是 `desktop`）。本地开发时可用 `dsh plugin --profile web add link:/path/to/dsh-turn-rail`，改源码后重启即可生效。
+> Replace `web` with your profile name — the desktop app usually uses `desktop`.
 
-要求：DSH **0.2.x** 的 Web GUI（桌面版与 `dsh web` 均可）。
+## Why it is this small
 
-## 设计取向：为什么它这么轻
+The design constraint is **not being orphaned by the host**.
 
-这个插件的核心约束是**不被宿主替掉**。
+Most plugins in this space read history the same way: client-side `inject: [..., 'remote']` → RPC into the session log. DSH 0.2.x changed that client surface, and that path stopped working — the symptom is a plugin that installs cleanly and renders nothing.
 
-DSH 里做同类功能的插件（会话导航条、历史滑轨、轮次面板）大多走「客户端 `inject: [..., 'remote']` → RPC 读会话日志」这条路。0.2.x 的客户端 API 换过一轮，那条路整体失效——表现为插件装好了、设置项也看不到、页面上什么都没有。
+`dsh-turn-rail` depends on only two things that have stayed stable in the UI layer:
 
-`dsh-turn-rail` 因此只依赖两样在 UI 层长期稳定的东西：
-
-```
-[data-conversation-scroll]                     对话滚动视口
-[data-chat-flow-kind="user"|"steering"]        你发出的提问节点
+```text
+[data-conversation-scroll]                  the conversation viewport
+[data-chat-flow-kind="user"|"steering"]     the messages you sent
 ```
 
-每个提问节点还带 `data-chat-anchor-key`（`13:input-message<uuid>` 形态），跳转时用它认人——**同一句话发两次也不会跳错**。分页则复用宿主自己的「加载更早」按钮，不自己读日志、不自己发请求。
+Paging reuses the host's own "load earlier" button — it never reads the log or makes its own requests. No host services, no background process, no settings panel, no storage.
 
-没有宿主服务依赖、没有后台进程、没有设置面板、没有任何存储。整个插件 600 行左右，卸掉后不留痕迹。
+## Boundaries
 
-## 兼容性与边界
+- Renders only in the Web GUI's conversation view; hides itself on the trajectory / subagent views.
+- History removed by host compaction is not in the DOM, so it gets no tick — the rail never invents history.
+- If the host renames the two DOM contracts above, the rail silently does not render (no errors, conversation unaffected). The fix point is the `SEL` constant at the top of [`lib/client.js`](./lib/client.js).
 
-- 只在 Web GUI 的「对话」视图渲染；切到轨迹 / 子代理等视图时自动隐藏。
-- 用户消息被宿主压缩（compaction）掉的部分不在 DOM 里，刻度自然也不会包含——插件不伪造历史。
-- 若宿主未来改动上述两个 DOM 契约，刻度会整体不显示（安静失败，不报错、不影响对话）。修复点集中在 `lib/client.js` 顶部的 `SEL` 常量。
+## Layout
 
-## 项目结构
-
-```
+```text
 dsh-turn-rail/
-├── package.json          # dsh.bundle + dsh.client 清单
-├── cordis.patch.yml      # 挂载到 profile 的一行
-├── index.js              # 宿主端：空实现（滑轨完全在浏览器侧）
-├── lib/client.js         # 全部逻辑（样式、布局、悬停、跳转、进度）
-└── docs/screenshots/     # 截图
+├── package.json          # dsh.bundle + dsh.client manifest
+├── cordis.patch.yml      # one mount row for the profile
+├── index.js              # host half: intentionally empty (rail is browser-side)
+├── lib/client.js         # all logic: styles, layout, hover, jump, progress
+└── assets/readme/        # hero and screenshots
 ```
 
-## 开发
-
-没有构建步骤：`lib/client.js` 就是最终产物（`__ModuleLoader__.load` bundle 格式）。
+There is no build step: `lib/client.js` is the shipped artifact (`__ModuleLoader__.load` bundle format).
 
 ```sh
 git clone https://github.com/shrekcg/dsh-turn-rail
 dsh plugin --profile web add link:./dsh-turn-rail
-# 改 lib/client.js，重启 DSH 即生效
+# edit lib/client.js, restart DSH to apply
 ```
 
 ## License
 
-[MIT](./LICENSE) © 2026 shrek wu
+[MIT](./LICENSE) © 2026 shrek wu · 中文说明见 [`README.zh.md`](./README.zh.md)

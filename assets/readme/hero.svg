@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="330" viewBox="0 0 1200 330" role="img" aria-labelledby="t d">
+  <title id="t">dsh-turn-rail — conversation turn rail for the DeepSeek Harness Web UI</title>
+  <desc id="d">A dark hero: the plugin name on the left, and on the right a schematic of the conversation turn rail — a column of ticks aligned with user messages, one tick hovered, with its preview card and a scroll position bar.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1117"/>
+      <stop offset="1" stop-color="#131a24"/>
+    </linearGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7aa2ff" stop-opacity="0"/>
+      <stop offset="0.15" stop-color="#7aa2ff" stop-opacity="0.09"/>
+      <stop offset="0.85" stop-color="#7aa2ff" stop-opacity="0.09"/>
+      <stop offset="1" stop-color="#7aa2ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="330" rx="22" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1198" height="328" rx="21" fill="none" stroke="#1f2937"/>
+
+  <!-- ── 左侧：标题区 ── -->
+  <g transform="translate(64 56)">
+    <text x="0" y="0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif"
+          font-size="17" fill="#6b7a90" letter-spacing="2.4">DEEPSEEK HARNESS · WEB UI PLUGIN</text>
+
+    <text x="0" y="62" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+          font-size="52" font-weight="700" fill="#e6edf7">dsh-turn-rail</text>
+
+    <text x="0" y="112" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif"
+          font-size="23" fill="#b6c2d4">长对话左侧的刻度尺：一条线一个问题。</text>
+    <text x="0" y="147" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif"
+          font-size="23" fill="#b6c2d4">悬停看当时问了什么，点一下回到那一条。</text>
+
+    <g transform="translate(0 186)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">
+      <rect x="0" y="0" width="188" height="30" rx="8" fill="#16202e" stroke="#25344a"/>
+      <text x="14" y="20" fill="#8fa6c4">纯客户端</text>
+      <rect x="200" y="0" width="150" height="30" rx="8" fill="#16202e" stroke="#25344a"/>
+      <text x="214" y="20" fill="#8fa6c4">无 RPC</text>
+      <rect x="362" y="0" width="168" height="30" rx="8" fill="#16202e" stroke="#25344a"/>
+      <text x="376" y="20" fill="#8fa6c4">无设置项</text>
+    </g>
+  </g>
+
+  <!-- ── 右侧：刻度滑轨示意（项目本身的样子，不是装饰） ── -->
+  <g transform="translate(790 34)">
+    <rect x="0" y="0" width="352" height="262" rx="14" fill="#0a0f16" stroke="#1e2a3a"/>
+
+    <!-- 滚动进度条 -->
+    <rect x="14" y="18" width="3" height="226" rx="1.5" fill="#243044"/>
+    <rect x="12" y="72" width="7" height="62" rx="3.5" fill="#3d5a8c"/>
+
+    <!-- 刻度列：每根 = 一个提问 -->
+    <g fill="#4a5a70">
+      <rect x="34" y="26"  width="9" height="3" rx="1.5"/>
+      <rect x="34" y="50"  width="9" height="3" rx="1.5"/>
+      <rect x="34" y="74"  width="9" height="3" rx="1.5"/>
+      <rect x="34" y="122" width="9" height="3" rx="1.5"/>
+      <rect x="34" y="146" width="9" height="3" rx="1.5"/>
+      <rect x="34" y="170" width="9" height="3" rx="1.5"/>
+      <rect x="34" y="194" width="9" height="3" rx="1.5"/>
+      <rect x="34" y="218" width="9" height="3" rx="1.5"/>
+    </g>
+    <!-- 当前阅读位置：蓝色长刻度 -->
+    <rect x="34" y="96" width="21" height="3" rx="1.5" fill="#7aa2ff"/>
+    <!-- 相邻两级阶梯 -->
+    <rect x="34" y="86" width="14" height="3" rx="1.5" fill="#56698a"/>
+    <rect x="34" y="110" width="14" height="3" rx="1.5" fill="#56698a"/>
+
+    <!-- 消息区：与刻度对齐的文本行，说明“一条线一个问题” -->
+    <g font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif" font-size="13">
+      <rect x="72" y="18"  width="252" height="3" rx="1.5" fill="#25313f"/>
+      <rect x="72" y="42"  width="212" height="3" rx="1.5" fill="#25313f"/>
+      <rect x="72" y="66"  width="238" height="3" rx="1.5" fill="#25313f"/>
+      <rect x="72" y="114" width="96" height="3" rx="1.5" fill="#25313f"/>
+      <rect x="72" y="138" width="120" height="3" rx="1.5" fill="#25313f"/>
+      <rect x="72" y="162" width="170" height="3" rx="1.5" fill="#25313f"/>
+      <rect x="72" y="186" width="230" height="3" rx="1.5" fill="#25313f"/>
+      <rect x="72" y="210" width="188" height="3" rx="1.5" fill="#25313f"/>
+    </g>
+
+    <!-- 悬停卡片：真实交互的样子 -->
+    <g transform="translate(132 92)">
+      <rect x="0" y="0" width="208" height="86" rx="10" fill="#eef2f8" stroke="#cfd9e8"/>
+      <rect x="14" y="14" width="52" height="18" rx="9" fill="#dbe6fb"/>
+      <text x="25" y="27" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif"
+            font-size="11" font-weight="600" fill="#3b6fe0">第 7 轮</text>
+      <rect x="14" y="42" width="180" height="3" rx="1.5" fill="#98a6ba"/>
+      <rect x="14" y="56" width="146" height="3" rx="1.5" fill="#98a6ba"/>
+      <text x="14" y="75" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif"
+            font-size="10.5" fill="#8b98ab">点击跳转到这一条</text>
+    </g>
+  </g>
+</svg>

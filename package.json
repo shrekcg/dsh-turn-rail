@@ -1,6 +1,6 @@
 {
   "name": "dsh-turn-rail",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Conversation turn rail for the DSH Web UI: one tick per user message, hover to preview, click to jump, plus a scroll-position indicator. Client-only, no host RPC.",
   "type": "module",
   "main": "index.js",
@@ -14,6 +14,7 @@
     "index.js",
     "lib",
     "cordis.patch.yml",
+    "assets",
     "README.md",
     "README.zh.md",
     "LICENSE"
