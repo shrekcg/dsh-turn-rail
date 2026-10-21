@@ -1,7 +1,7 @@
 {
   "name": "dsh-turn-rail",
-  "version": "0.1.1",
-  "description": "Conversation turn rail for the DSH Web UI: one tick per user message, hover to preview, click to jump, plus a scroll-position indicator. Client-only, no host RPC.",
+  "version": "0.1.2",
+  "description": "给 DSH Web UI 长对话的轮次刻度滑轨：每条提问一根刻度，悬停预览、点击跳转，带当前位置与滚动进度。纯客户端，不依赖 host RPC。",
   "type": "module",
   "main": "index.js",
   "exports": {
@@ -16,7 +16,7 @@
     "cordis.patch.yml",
     "assets",
     "README.md",
-    "README.zh.md",
+    "README.en.md",
     "LICENSE"
   ],
   "keywords": [
